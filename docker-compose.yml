@@ -1,0 +1,39 @@
+
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+       # Mount results so we can see logs/etc if needed, though mostly model is baked in.
+       - ./results:/app/results
+    environment:
+      - MODEL_PATH=/app/model_output
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - sentiment-net
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - sentiment-net
+
+networks:
+  sentiment-net:
+    driver: bridge
