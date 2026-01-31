@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+requests
+streamlit
+pandas
+torch
+transformers
+datasets
+scikit-learn
+accelerate>=1.1.0
