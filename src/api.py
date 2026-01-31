@@ -81,3 +81,5 @@ def predict(request: PredictRequest):
     except Exception as e:
         logger.error(f"Prediction error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+# Minor comment fix
